@@ -1,3 +1,6 @@
+#(c)2011 Jyotirmoy Bhattacharya jyotirmoy@jyotirmoy.net
+#Licence: GPL
+
 #Reproduce Table 20.1 from
 #big Wooldridge
 

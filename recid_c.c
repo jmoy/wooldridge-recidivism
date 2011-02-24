@@ -1,3 +1,8 @@
+/*
+(c)2011 Jyotirmoy Bhattacharya
+Licence: GPL
+*/
+
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
