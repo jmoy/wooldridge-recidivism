@@ -2,6 +2,8 @@
 #big Wooldridge
 
 require(stats4)
+dyn.load(paste("recid_c" ,.Platform$dynlib.ext,sep=""))
+
 read.recid <- function(){
   return(read.table("recid.raw",col.names=c("black",
                                   "alcohol",
@@ -29,40 +31,40 @@ depvars <- c("workprg","priors","tserved","felon","alcohol",
 ll.factory <- function(){
   recid <- read.recid()
   recid$constant <- 1
-  y <- recid$durat
-  X <- as.matrix(recid[,depvars])
   censored <- recid$cens==1
+  ycens <- recid$durat[censored]
+  yuncens <- recid$durat[!censored]
+  Xcens <- as.matrix(recid[censored,depvars])
+  Xuncens <- as.matrix(recid[!censored,depvars])
   N <- length(depvars)
 
-  log.weibull.density <- Vectorize(function(t,xbeta,alpha){
-    g <- exp(xbeta)
-    xbeta+log(alpha*t^(alpha-1))-g*t^alpha
-  },c("t","xbeta"))
- 
-
-  log.weibull.survival <- Vectorize(function(t,xbeta,alpha){
-    g <- exp(xbeta)
-    -g*t^alpha
-  },c("t","xbeta"))
+  handle<-.Call("jmoy_loaddata",N,
+                as.double(ycens),as.double(Xcens),length(ycens),
+                as.double(yuncens),as.double(Xuncens),length(yuncens))
   
-  negloglik <- function(alpha,workprg,priors,tserved,felon,alcohol,
-                        drugs,black,married,educ,age,constant){
+  negloglik <- function(workprg,priors,tserved,felon,alcohol,
+                        drugs,black,married,educ,age,constant,alpha){
     beta <- c(workprg,priors,tserved,felon,alcohol,
               drugs,black,married,educ,age,constant)
-    X.beta <- X%*%beta
+    .Call("jmoy_negloglik",handle,as.double(beta),as.double(alpha))
+ }
 
-    -sum(log.weibull.density(y[!censored],X.beta[!censored],alpha))                 -sum(log.weibull.survival(y[censored],X.beta[censored],alpha))
-  }
+  gradient <- function(pars){
+    .Call("jmoy_gradient",handle,as.double(pars[1:N]),as.double(pars[N+1]))
+ }
 
-  
-  negloglik
+
+  list(nll=negloglik,gr=gradient)
 }
 
 main <- function(){
-  negloglik <- ll.factory()
-  start <- c(1,rep(1e-4,length(depvars)))
-  names(start) <- c("alpha",depvars)
-  mle(negloglik,as.list(start))
+  fns <- ll.factory()
+  truestart <- c(0.091,0.089,0.014,-0.299,0.447,0.281,0.454,-0.152,
+             -0.023,-0.0037,-3.402,0.806)
+  start <- c(rep(0,length(depvars)),1)
+  names(start) <- c(depvars,"alpha")
+  mle(fns$nll,as.list(start),gr=fns$gr,
+           control=list(trace=1))
 }
 
     
