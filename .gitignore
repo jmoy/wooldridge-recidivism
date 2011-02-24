@@ -1,5 +1,3 @@
-.Rhistory
-*.des
-*.raw
-*.dta
-
+*.so
+*.dll
+*.o
