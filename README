@@ -1,0 +1,24 @@
+This project contains code and data to reproduce Table 20.1 in Jeffrey
+Wooldridge's 'Econometric Analysis of Cross Section and Panel Data'
+using R [http://www.r-project.org ] and C code.
+
+INSTALLATION 
+
+You need to compile the C code. You can do so by giving
+the command R CMD SHLIB recid_c.c
+
+A pre-compiled DLL for Windows is provided for convenience. This was
+compiled using GCC v. 4.5.2 on MinGW on 32-bit Windows with R version
+2.11.1
+
+USAGE 
+
+The function read.recid() reads in the data a returns it as a
+data frame.
+
+The function main() performs maximum likelihood estimation to
+reproduce the table. It returns and object of class mle-class. Use the
+summary method on this object to see the standard errors.
+
+MAINTAINER
+This program was written by Jyotirmoy Bhattacharya [jyotirmoy@jyotirmoy.net]
