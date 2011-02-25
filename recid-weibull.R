@@ -78,5 +78,9 @@ recid.survreg <- function(){
              workprg+priors+tserved+felon+alcohol+
              drugs+black+married+educ+age,
              data=d,dist="weibull")
+  #survreg fits the accelerated failure time form of
+  #the Weibull distribution while Wooldridge uses the
+  #proportional hazards form.
+  #So we transform the coefficients.
   list(coef=-z$coefficients/z$scale,alpha=1.0/z$scale)
 }
