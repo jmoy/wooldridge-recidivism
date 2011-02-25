@@ -70,4 +70,13 @@ main <- function(){
            control=list(trace=1))
 }
 
-    
+recid.survreg <- function(){
+  library(survival)
+  d <- read.recid()
+  S<-Surv(d$durat,ifelse(d$cens==1,0,1))
+  z<-survreg(S~
+             workprg+priors+tserved+felon+alcohol+
+             drugs+black+married+educ+age,
+             data=d,dist="weibull")
+  list(coef=-z$coefficients/z$scale,alpha=1.0/z$scale)
+}
