@@ -17,7 +17,7 @@ The function read.recid() reads in the data a returns it as a
 data frame.
 
 The function main() performs maximum likelihood estimation to
-reproduce the table. It returns and object of class mle-class. Use the
+reproduce the table. It returns an object of class mle-class. Use the
 summary method on this object to see the standard errors.
 
 MAINTAINER
