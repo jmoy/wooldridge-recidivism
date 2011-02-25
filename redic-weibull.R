@@ -4,7 +4,7 @@
 #Reproduce Table 20.1 from
 #big Wooldridge
 
-require(stats4)
+library(stats4)
 dyn.load(paste("recid_c" ,.Platform$dynlib.ext,sep=""))
 
 read.recid <- function(){
