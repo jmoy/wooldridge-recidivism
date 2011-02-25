@@ -60,7 +60,7 @@ ll.factory <- function(){
   list(nll=negloglik,gr=gradient)
 }
 
-main <- function(){
+recid.mle <- function(){
   fns <- ll.factory()
   truestart <- c(0.091,0.089,0.014,-0.299,0.447,0.281,0.454,-0.152,
              -0.023,-0.0037,-3.402,0.806)
