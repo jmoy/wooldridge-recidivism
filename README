@@ -1,6 +1,9 @@
 This project contains code and data to reproduce Table 20.1 in Jeffrey
 Wooldridge's 'Econometric Analysis of Cross Section and Panel Data'
-using R [http://www.r-project.org ] and C code.
+using R [http://www.r-project.org ]. Two methods are given, one using
+the standard R 'survival' package and the other carrying out the
+maximum likelihood computation from scratch and using C code for the
+computationally intensive parts.
 
 INSTALLATION 
 
@@ -16,9 +19,13 @@ USAGE
 The function read.recid() reads in the data a returns it as a
 data frame.
 
-The function main() performs maximum likelihood estimation to
-reproduce the table. It returns an object of class mle-class. Use the
-summary method on this object to see the standard errors.
+The function recid.mle() performs maximum likelihood estimation from
+scratch to reproduce the table. It returns an object of class
+mle-class. Use the summary method on this object to see the standard
+errors.
+
+The function recid.survreg() uses the survreg function from the
+'survival' library to reproduce the table.
 
 MAINTAINER
 This program was written by Jyotirmoy Bhattacharya [jyotirmoy@jyotirmoy.net]
